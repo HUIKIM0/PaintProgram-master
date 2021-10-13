@@ -26,7 +26,7 @@ namespace Paint
         bool curveFlag2 = false;
 
         Graphics g = null;
-        Point ClickPos = new Point();
+        Point ClickPos = new Point();    
         Point CurPos = new Point();
 
         Rectangle rec;
@@ -134,7 +134,7 @@ namespace Paint
                 case DrawMode.rect: //직사각형 그리기
                     if (ClickPos.X > CurPos.X) //left가 right보다 클 경우
                     {
-                        Swap(ref clickpos_X, ref curpos_x);
+                        Swap(ref clickpos_X, ref curpos_x);     //값교환. curpos_x가 더 커야함
                     }
 
                     if (ClickPos.Y > CurPos.Y) //top이 bottom보다 클 경우
@@ -189,6 +189,7 @@ namespace Paint
             }
         }
 
+
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             Color color;
@@ -211,6 +212,7 @@ namespace Paint
                 Width = curLineSize
             };
 
+            //사용자가 마우스를 누를때 flag가 true가 된다 -> 그려진다
             if (flag)
             {
                 switch (drawMode)
@@ -270,10 +272,13 @@ namespace Paint
             }
         }
 
+
+        //사용자가 마우스를 클릭하면(그림 그리면)
         private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             flag = true;
 
+            //사용자가 처음 클릭한 위치 저장
             ClickPos = pictureBox1.PointToClient(new Point(Control.MousePosition.X, Control.MousePosition.Y));
 
             if (curveFlag1 == true && curveFlag2 == true && drawMode == DrawMode.curve) //곡선
@@ -303,6 +308,8 @@ namespace Paint
             }
         }
 
+        
+        //사용자가 마우스 클릭을 그만두면(그림 X)
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             flag = false;
@@ -317,6 +324,7 @@ namespace Paint
                     drawingSaveData.Add(dd);
                     break;
 
+                   //선이랑 곡선그리기는 더 자유롭게 그리기 가능 startPoint / endPoint 꼭 필요
                 case DrawMode.line:
                     DrawingData sd = new DrawingData();
                     sd.startPoint = ClickPos;
